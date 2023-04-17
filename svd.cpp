@@ -6,18 +6,21 @@
 
 /*Singular Value Decomposition
 Parameters: (outputs) 1st eigen vector set, diagonal singular values, 2nd eigenvector set, (inputs) input matrix, row count, col count */
-void svd(float U[], float S[], float V[], float X[], int N, int M)
+void svd(float UU[], float S[], float VV[], float X[], int N, int M)
 {
 	int i, j;
 	bool transposed = false;
+	float *V = VV, *U = UU;
 	if (N < M) { //transpose if rows are less than columns
 		int tmp = N;
-		N = M;
-		M = tmp;
 		float *Xnew;
 		Xnew = new float[M*N];
 		transpose(Xnew, X, N, M);
+		N = M;
+		M = tmp;
 		copy_matrix(X, Xnew, N, M);
+		V = UU;
+		U = VV;
 		transposed = true;
 		delete[] Xnew;
 	}
@@ -54,13 +57,10 @@ void svd(float U[], float S[], float V[], float X[], int N, int M)
 
 	if (transposed)
 	{
-		int tmp = N;
-		N = M;
-		M = tmp;
 		float *Xnew;
 		Xnew = new float[M*N];
 		transpose(Xnew, X, N, M);
-		copy_matrix(X, Xnew, N, M);  //needs clean up
+		copy_matrix(X, Xnew, M, N);
 		delete[] Xnew;
 	}
 
@@ -83,6 +83,19 @@ void psInv(float Y[], float X[], int N, int M)
 	int i;
 
 	float *U, *V, *S, *Sinv, *Utr, *V_Sinv;
+	bool transposed = false;
+	if (N < M) { //transpose if rows are less than columns
+		int tmp = N;
+		float* Xnew;
+		Xnew = new float[M * N];
+		transpose(Xnew, X, N, M);
+		N = M;
+		M = tmp;
+		copy_matrix(X, Xnew, N, M);
+		transposed = true;
+		delete[] Xnew;
+	}
+
 	S = new float[M*M];
 	Sinv = new float[M*M];
 	U = new float[N*M];
@@ -102,6 +115,16 @@ void psInv(float Y[], float X[], int N, int M)
 	transpose(Utr, U, N, M);
 
 	multiply_matrices(Y, V_Sinv, Utr, M, M, N);
+
+	if (transposed) {
+		float* Xnew;
+		Xnew = new float[M * N];
+		transpose(Xnew, X, N, M);
+		copy_matrix(X, Xnew, N, M);
+		transpose(Xnew, Y, M, N );
+		copy_matrix(Y, Xnew, M, N);
+		delete[] Xnew;
+	}
 
 	delete[] S;
 	S = NULL;
