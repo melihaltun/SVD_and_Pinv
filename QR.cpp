@@ -10,23 +10,25 @@ void givensRotation(float *c, float *s, float a, float b)
 {
 	float r;
 	if (b == 0) {
-		*c = 1 * sgn(b);
+		*c = (float)(1 * sgn(a));
+		if (*c == 0)
+			*c = 1.0f;
 		*s = 0;
 	}
 	else if (a == 0) {
 		*c = 0;
-		*s = -1 * sgn(a);
+		*s = (float)(-1 * sgn(b));
 	}
 	else {
 		if (fabs(b) > fabs(a)) {
 			r = a / b;
-			*s = -sgn(b) / sqrt(1 + r*r);
-			*c = -(*s)*r;
+			*s = -sgn(b) / sqrtf(1 + r * r);
+			*c = -(*s) * r;
 		}
 		else {
 			r = b / a;
-			*c = sgn(a) / sqrt(1 + r*r);
-			*s = -(*c)*r;
+			*c = sgn(a) / sqrtf(1 + r * r);
+			*s = -(*c) * r;
 		}
 	}
 }
@@ -37,11 +39,14 @@ void QR(float Q[], float R[], float in[], int N, int M)
 {
 	int i, j;
 	float c, s;
+	/*
 	float *G, *Gt, *Rnew, *Qnew;
 	G = new float[N*N];
 	Gt = new float[N*N];
 	Rnew = new float[N*M];
 	Qnew = new float[N*N];
+	*/
+	float G[4], Gt[4], Rnew[4], Qnew[4];   /// delelte !!!!!!!!!!!!!!!!
 
 	set_to_identity(Q, N);
 	copy_matrix(R, in, N, M);
@@ -62,6 +67,7 @@ void QR(float Q[], float R[], float in[], int N, int M)
 		}
 	}
 	//release dynamic memory
+	/*    UNcomment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	delete[] G;
 	G = NULL;
 	delete[] Gt;
@@ -70,4 +76,5 @@ void QR(float Q[], float R[], float in[], int N, int M)
 	Rnew = NULL;
 	delete[] Qnew;
 	Qnew = NULL;
+	*/
 }
