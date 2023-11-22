@@ -39,14 +39,12 @@ void QR(float Q[], float R[], float in[], int N, int M)
 {
 	int i, j;
 	float c, s;
-	/*
+	
 	float *G, *Gt, *Rnew, *Qnew;
 	G = new float[N*N];
 	Gt = new float[N*N];
 	Rnew = new float[N*M];
 	Qnew = new float[N*N];
-	*/
-	float G[4], Gt[4], Rnew[4], Qnew[4];   /// delelte !!!!!!!!!!!!!!!!
 
 	set_to_identity(Q, N);
 	copy_matrix(R, in, N, M);
@@ -67,7 +65,6 @@ void QR(float Q[], float R[], float in[], int N, int M)
 		}
 	}
 	//release dynamic memory
-	/*    UNcomment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	delete[] G;
 	G = NULL;
 	delete[] Gt;
@@ -76,5 +73,4 @@ void QR(float Q[], float R[], float in[], int N, int M)
 	Rnew = NULL;
 	delete[] Qnew;
 	Qnew = NULL;
-	*/
 }
